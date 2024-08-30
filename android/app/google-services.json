@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "659896139542",
+    "project_id": "sihpractice-b1168",
+    "storage_bucket": "sihpractice-b1168.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:659896139542:android:f8a966f2da268ec4129a37",
+        "android_client_info": {
+          "package_name": "com.example.sih_practice"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCtE-sSxUzNI215kHLeBIyS_5YaG8vTQ8s"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
