@@ -11,7 +11,6 @@ class StockAddScreen extends StatefulWidget {
 }
 
 class _StockAddScreenState extends State<StockAddScreen> {
-
   TextEditingController nameController = TextEditingController();
   TextEditingController priceController = TextEditingController();
   TextEditingController qtyController = TextEditingController();
@@ -31,10 +30,15 @@ class _StockAddScreenState extends State<StockAddScreen> {
     'Medical Supplies',
   ];
 
-  
+  bool isLoading = false;
+
   Future<void> uploadStock() async {
+    setState(() {
+      isLoading = true;
+    });
+
     try {
-      
+      // Adding the stock to the Firestore database
       await FirebaseFirestore.instance.collection('hospitals').doc(widget.hospitalId).collection('stocks').add({
         'name': nameController.text,
         'category': categoryDropdownValue,
@@ -44,15 +48,16 @@ class _StockAddScreenState extends State<StockAddScreen> {
         'createdAt': FieldValue.serverTimestamp(),
       });
 
+      // Clear the text fields and reset dropdowns
       nameController.clear();
       priceController.clear();
       qtyController.clear();
       setState(() {
-        categoryDropdownValue = 'Medicines'; // Reset category dropdown
-        subcategoryDropdownValue = 'Painkillers'; // Reset subcategory dropdown
+        categoryDropdownValue = 'Medicines';
+        subcategoryDropdownValue = 'Painkillers';
       });
 
-      // Show success message
+      // Show success dialog
       showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -71,15 +76,36 @@ class _StockAddScreenState extends State<StockAddScreen> {
         },
       );
     } catch (e) {
+      // Print the error to the console
       print('Error uploading stock: $e');
+
+      // Show error dialog
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('Error'),
+            content: Text('Failed to add stock item. Please try again.'),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: Text('OK'),
+              ),
+            ],
+          );
+        },
+      );
+    } finally {
+      setState(() {
+        isLoading = false;
+      });
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    final height = MediaQuery.of(context).size.height;
-    final width = MediaQuery.of(context).size.width;
-
     return Scaffold(
       appBar: AppBar(
         title: Text("Add Stock Item"),
@@ -160,12 +186,24 @@ class _StockAddScreenState extends State<StockAddScreen> {
               ),
             ),
             SizedBox(height: 32.0),
-            ElevatedButton.icon(
-              onPressed: () {
-                uploadStock();
-              },
-              icon: Icon(Icons.upload),
-              label: Text("Add Stock"),
+            ElevatedButton(
+              onPressed: isLoading ? null : uploadStock, // Disable button while loading
+              style: ElevatedButton.styleFrom(
+                padding: EdgeInsets.symmetric(vertical: 16.0),
+                textStyle: TextStyle(fontSize: 18),
+              ),
+              child: isLoading
+                  ? CircularProgressIndicator(
+                      valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                    )
+                  : Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(Icons.upload),
+                        SizedBox(width: 8),
+                        Text("Add Stock"),
+                      ],
+                    ),
             ),
           ],
         ),

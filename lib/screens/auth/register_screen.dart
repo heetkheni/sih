@@ -19,6 +19,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
   final userNameController = TextEditingController();
+  final cityController = TextEditingController();
+
+
   bool isloading = false;
   String token = "";
 
@@ -137,6 +140,19 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             SizedBox(
                               height: 20,
                             ),
+                            TextFormField(
+                              obscureText: true,
+                              controller: cityController,
+                              decoration: textInputDecoration.copyWith(
+                                  labelText: 'City',
+                                  prefixIcon: Icon(
+                                    Icons.lock,
+                                    color: Theme.of(context).primaryColor,
+                                  )),
+                            ),
+                            SizedBox(
+                              height: 20,
+                            ),
                             SizedBox(
                               height: 45,
                               width: 200,
@@ -192,7 +208,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
       });
       await AuthServices()
           .signUpUserwithEmailandPAssword(userNameController.text,
-              emailController.text.toLowerCase(), passwordController.text , token)
+              emailController.text.toLowerCase(), passwordController.text , token,cityController.text)
           .then((value) async {
         if (value == true) {
           Navigator.of(context).pushAndRemoveUntil(
@@ -203,6 +219,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
             emailController.clear();
             passwordController.clear();
             userNameController.clear();
+            cityController.clear();
           });
         } else {
           setState(() {
