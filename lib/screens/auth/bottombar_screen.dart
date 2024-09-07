@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:sih_practice/screens/appointment_add_screen.dart';
+import 'package:sih_practice/screens/appointment_list_screen.dart';
 import 'package:sih_practice/screens/available_bed_screen.dart';
 import 'package:sih_practice/screens/home_screen.dart';
 import 'package:sih_practice/screens/profile_screen.dart';
@@ -16,8 +18,11 @@ class _BottomBarScreenState extends State<BottomBarScreen> {
 
   final List<Widget> _children = [
     HospitalListScreen(),
-    StockAddScreen(hospitalId: "Kiran Hospital"),
-    ProfileScreen(),
+    AppointmentListScreen(),
+    // StockAddScreen(hospitalId:"Kiran Hospital"),
+    //AddAppointmentScreen(hospitalId: "Kiran Hospital"),
+    //AvailableBedsScreen(hospitalId: "Kiran Hospital",),
+    ProfileScreen()
   ];
 
   void onTabTapped(int index) {
@@ -39,12 +44,12 @@ class _BottomBarScreenState extends State<BottomBarScreen> {
             label: 'Home',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.explore),
-            label: 'Explore',
+            icon: Icon(Icons.app_registration),
+            label: 'Appointment',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: 'Profile',
+            icon: Icon(Icons.bed),
+            label: 'Beds',
           ),
         ],
         selectedItemColor: Colors.blue, // Adjust to your app's color scheme

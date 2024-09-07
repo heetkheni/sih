@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:sih_practice/services/bed_service.dart';
+import 'package:sih_practice/shared/color.dart';
 
 class AvailableBedsScreen extends StatefulWidget {
   final String hospitalId;
@@ -35,35 +36,68 @@ class _AvailableBedsScreenState extends State<AvailableBedsScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Available Beds'),
+        backgroundColor: primaryColor,
       ),
       body: Column(
         children: [
-          DropdownButton<String>(
-            value: _selectedBedType,
-            items: ['General', 'Premium', 'Executive', 'Two-Sharing'].map((String bedType) {
-              return DropdownMenuItem<String>(
-                value: bedType,
-                child: Text(bedType),
-              );
-            }).toList(),
-            onChanged: (String? newValue) {
-              setState(() {
-                _selectedBedType = newValue!;
-                _loadAvailableBeds();
-              });
-            },
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: DropdownButtonFormField<String>(
+              value: _selectedBedType,
+              items: ['General', 'Premium', 'Executive', 'Two-Sharing'].map((String bedType) {
+                return DropdownMenuItem<String>(
+                  value: bedType,
+                  child: Text(bedType),
+                );
+              }).toList(),
+              onChanged: (String? newValue) {
+                setState(() {
+                  _selectedBedType = newValue!;
+                  _loadAvailableBeds();
+                });
+              },
+              decoration: InputDecoration(
+                labelText: "Select Bed Type",
+                filled: true,
+                fillColor: backgroundColor,
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10),
+                  borderSide: BorderSide.none,
+                ),
+              ),
+            ),
           ),
           Expanded(
             child: ListView.builder(
               itemCount: _availableBeds.length,
               itemBuilder: (context, index) {
                 final bed = _availableBeds[index];
-                return ListTile(
-                  title: Text('Bed ID: ${bed['bedid']}'),
-                  subtitle: Text('Status: ${bed['status']}'),
-                  trailing: IconButton(
-                    onPressed: () => _bedService.bookBed(widget.hospitalId,bed['bedid'],auth.currentUser!.uid.toString()),
-                    icon: Icon(Icons.book),
+                return Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: primaryColor,
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                    child: ListTile(
+                      title: Text(
+                        'Bed ID: ${bed['bedid']}',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: buttonColor,
+                        ),
+                      ),
+                      subtitle: Text(
+                        'Status: ${bed['status']}',
+                        style: TextStyle(
+                          color: Colors.black,
+                        ),
+                      ),
+                      trailing: IconButton(
+                        onPressed: () => _bedService.bookBed(widget.hospitalId, bed['bedid'], auth.currentUser!.uid.toString()),
+                        icon: Icon(Icons.local_hospital, color: buttonColor),
+                      ),
+                    ),
                   ),
                 );
               },
