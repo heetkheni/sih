@@ -4,6 +4,10 @@
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.CALL_PHONE" />
+    
+    <!-- Add this feature to specify that the app uses the telephony service -->
+    <!-- <uses-feature android:name="android.hardware.telephony" android:required="false" /> -->
     <application
         android:label="sih_practice"
         android:name="${applicationName}"
