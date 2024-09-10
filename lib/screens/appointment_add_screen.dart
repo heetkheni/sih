@@ -50,17 +50,19 @@ class _AddAppointmentScreenState extends State<AddAppointmentScreen> {
       // Fetch the last queue number for the specific hospital
       final queueNumberSnapshot = await FirebaseFirestore.instance
           .collection('appointments')
-          .where('h_id', isEqualTo: widget.hospitalId)
+          .where('hospital_id', isEqualTo: widget.hospitalId)
           .orderBy('queue_number', descending: true)
           .limit(1)
           .get();
       
       final queueNumber = queueNumberSnapshot.docs.isEmpty
-          ? 1
-          : (queueNumberSnapshot.docs.first['queue_number'] as int) + 1;
+  ? 1
+  : int.tryParse(queueNumberSnapshot.docs.first['queue_number'].toString()) ?? 1 + 1;
 
       // Set priority number based on the priority selected
       final priorityNumber = _priority == 'emergency' ? 1 : 2;
+
+      final auth = FirebaseAuth.instance;
 
       await appointmentRef.set({
         'appointment_id': appointmentId,
@@ -75,6 +77,7 @@ class _AddAppointmentScreenState extends State<AddAppointmentScreen> {
         'priority_number': priorityNumber,
         'queue_number': queueNumber,
         'status': 'waiting',
+        'u_id': auth.currentUser!.uid,
         'created_at': DateTime.now().toIso8601String(),
         'appointment_date': _selectedDate?.toIso8601String(), // Add the date
       });
