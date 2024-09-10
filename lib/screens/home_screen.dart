@@ -73,13 +73,13 @@ class _HospitalListScreenState extends State<HospitalListScreen> {
                       final hospital = hospitals[index];
                       return HospitalTile(
                         hospitalName:hospital['name'] ,
-                        hospitalId: hospital['h_id'],
+                        hospitalId: hospital['hospital_id'],
                         //name: hospital['name'],
                         contact: hospital['contact'],
                         mail: hospital['email'],
                         address: hospital['address'], 
                         onTap: (){
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => AddAppointmentScreen(hospitalId: hospital['h_id'], hospitalName: hospital['name'] )));
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => AddAppointmentScreen(hospitalId: hospital['hospital_id'], hospitalName: hospital['name'] )));
                         },
                       );
                     },

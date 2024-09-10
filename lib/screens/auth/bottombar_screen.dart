@@ -5,6 +5,7 @@ import 'package:sih_practice/screens/available_bed_screen.dart';
 import 'package:sih_practice/screens/home_screen.dart';
 import 'package:sih_practice/screens/profile_screen.dart';
 import 'package:sih_practice/screens/stock_add_screen.dart';
+import 'package:sih_practice/shared/color.dart';
 
 class BottomBarScreen extends StatefulWidget {
   const BottomBarScreen({super.key});
@@ -48,11 +49,11 @@ class _BottomBarScreenState extends State<BottomBarScreen> {
             label: 'Appointment',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.bed),
-            label: 'Beds',
+            icon: Icon(Icons.person),
+            label: 'Profile',
           ),
         ],
-        selectedItemColor: Colors.blue, // Adjust to your app's color scheme
+        selectedItemColor: buttonColor,
         unselectedItemColor: Colors.grey,
       ),
     );

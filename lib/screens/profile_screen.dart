@@ -1,14 +1,9 @@
-import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:cloud_firestore/cloud_firestore.dart'; // Ensure you import this for Firebase Firestore
-import 'package:intl/intl.dart';
-import 'package:sih_practice/screens/auth/login_screen.dart';
-
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:intl/intl.dart';
-import 'package:sih_practice/services/database_services.dart';
 import 'package:sih_practice/screens/auth/login_screen.dart';
+import 'package:sih_practice/shared/color.dart';
 
 class ProfileScreen extends StatefulWidget {
   @override
@@ -138,6 +133,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               style: TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.bold,
+                color: buttonColor, // Use buttonColor
               ),
             ),
             SizedBox(height: 8),
@@ -159,7 +155,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 );
               }).toList(),
               decoration: InputDecoration(
-                prefixIcon: Icon(Icons.local_hospital, color: Theme.of(context).primaryColor),
+                prefixIcon: Icon(Icons.local_hospital, color: buttonColor), // Use buttonColor
                 filled: true,
                 fillColor: Colors.grey[200],
                 contentPadding: EdgeInsets.symmetric(vertical: 12, horizontal: 10),
@@ -194,6 +190,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               style: TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.bold,
+                color: buttonColor, // Use buttonColor
               ),
             ),
             SizedBox(height: 8),
@@ -210,7 +207,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         controller: controller,
                         keyboardType: keyboardType,
                         decoration: InputDecoration(
-                          prefixIcon: Icon(icon, color: Theme.of(context).primaryColor),
+                          prefixIcon: Icon(icon, color: buttonColor), // Use buttonColor
                           filled: true,
                           fillColor: Colors.grey[200],
                           contentPadding: EdgeInsets.symmetric(vertical: 12, horizontal: 10),
@@ -227,7 +224,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   )
                 : Row(
                     children: [
-                      Icon(icon, color: Theme.of(context).primaryColor),
+                      Icon(icon, color: buttonColor), // Use buttonColor
                       SizedBox(width: 10),
                       Expanded(
                         child: Text(
@@ -247,94 +244,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
       ),
     );
   }
-  Widget _buildAppointmentsList() {
-  if (userAppointments == null) {
-    return Center(child: CircularProgressIndicator());
-  } else if (userAppointments!.isEmpty) {
-    return Center(child: Text('No appointments found.'));
-  } else {
-    return SizedBox(
-      height: MediaQuery.of(context).size.height,
-      child: ListView.builder(
-        itemCount: userAppointments!.length,
-        itemBuilder: (context, index) {
-          final appointment = userAppointments![index];
-          return Card(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(16.0),
-            ),
-            elevation: 2,
-            margin: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-            child: Padding(
-              padding: const EdgeInsets.all(12.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Appointment ID: ${appointment['apt_id']}',
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  SizedBox(height: 8),
-                  Text(
-                    'Contact: ${appointment['contact']}',
-                    style: TextStyle(fontSize: 14),
-                  ),
-                  Text(
-                    'Date: ${appointment['date']}',
-                    style: TextStyle(fontSize: 14),
-                  ),
-                  Text(
-                    'Description: ${appointment['discription']}',
-                    style: TextStyle(fontSize: 14),
-                  ),
-                  Text(
-                    'Disease: ${appointment['disease']}',
-                    style: TextStyle(fontSize: 14),
-                  ),
-                  Text(
-                    'Email: ${appointment['email']}',
-                    style: TextStyle(fontSize: 14),
-                  ),
-                  Text(
-                    'Hospital ID: ${appointment['h_id']}',
-                    style: TextStyle(fontSize: 14),
-                  ),
-                  Text(
-                    'Hospital Name: ${appointment['h_name']}',
-                    style: TextStyle(fontSize: 14),
-                  ),
-                  Text(
-                    'Priority: ${appointment['priority']}',
-                    style: TextStyle(fontSize: 14),
-                  ),
-                  Text(
-                    'Status: ${appointment['status']}',
-                    style: TextStyle(fontSize: 14),
-                  ),
-                  Text(
-                    'User Name: ${appointment['user_name']}',
-                    style: TextStyle(fontSize: 14),
-                  ),
-                ],
-              ),
-            ),
-          );
-        },
-      ),
-    );
-  }
-}
-
-    
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text('Profile'),
+        backgroundColor: primaryColor, // Use primaryColor
         actions: [
           IconButton(
             icon: Icon(Icons.exit_to_app),
@@ -346,38 +262,49 @@ class _ProfileScreenState extends State<ProfileScreen> {
         padding: const EdgeInsets.all(16.0),
         child: ListView(
           children: [
-            // _buildInfoCard('Name', nameController, isEditing, TextInputType.text, Icons.person),
-            // _buildInfoCard('Email', emailController, isEditing, TextInputType.emailAddress, Icons.email),
-            // _buildInfoCard('Date of Birth', dobController, isEditing, TextInputType.datetime, Icons.calendar_today, isDateField: true),
-            // _buildBloodGroupDropdown(),
-            // _buildInfoCard('Phone Number', phoneController, isEditing, TextInputType.phone, Icons.phone),
-            // _buildInfoCard('Medical History', medicalHistoryController, isEditing, TextInputType.text, Icons.medical_services),
+            _buildInfoCard('Name', nameController, isEditing, TextInputType.text, Icons.person),
+            _buildInfoCard('Email', emailController, isEditing, TextInputType.emailAddress, Icons.email),
+            _buildInfoCard('Date of Birth', dobController, isEditing, TextInputType.datetime, Icons.calendar_today, isDateField: true),
+            _buildBloodGroupDropdown(),
+            _buildInfoCard('Phone Number', phoneController, isEditing, TextInputType.phone, Icons.phone),
+            _buildInfoCard('Medical History', medicalHistoryController, isEditing, TextInputType.text, Icons.medical_services),
+            const SizedBox(height: 15,),
             if (isEditing)
               ElevatedButton(
                 onPressed: _saveUserData,
-                child: Text('Save Changes'),
+                child: Text('Save Changes',style: TextStyle(color: backgroundColor),),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: buttonColor,
+                  padding: EdgeInsets.symmetric(vertical: 12, horizontal: 20),
+                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(8.0),
+                  ),
+                ),
+              ),
+            if (!isEditing)
+              ElevatedButton(
+                onPressed: () {
+                  setState(() {
+                    isEditing = true;
+                  });
+                },
+                child: Text('Edit Profile',style: TextStyle(color: backgroundColor),),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: buttonColor,
+                  padding: EdgeInsets.symmetric(vertical: 12, horizontal: 20),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8.0),
+                  ),
+                ),
               ),
             SizedBox(height: 20),
-            Text(
-              'Appointments',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-            ),
-            SizedBox(height: 10),
-            _buildAppointmentsList(),
-          ],
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        child: Icon(isEditing ? Icons.check : Icons.edit),
-        onPressed: () {
-          setState(() {
-            isEditing = !isEditing;
-          });
-        },
+          ]
+        )
       ),
     );
   }
 }
+
 
 class DatabaseServices {
   final String? uid;
